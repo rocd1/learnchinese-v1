@@ -83,6 +83,7 @@ INSTALLED_APPS = [
 
     # Local Apps
     "accounts",
+    "learning",
 
 ]
 
