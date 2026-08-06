@@ -19,4 +19,4 @@
 
 ## Import Commands
 
-python manage.py import_hsk data/hsk/json/hsk.json
+python manage.py import_data
