@@ -22,6 +22,9 @@ media/*
 logs/*
 !logs/.gitkeep
 
+*.log
+
+
 # Static
 staticfiles/
 

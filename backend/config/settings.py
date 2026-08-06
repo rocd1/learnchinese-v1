@@ -552,7 +552,32 @@ LOGGING = {
             "formatter": "verbose",
             "encoding": "utf-8",
         },
+
+
+        "import_file": {
+            "class": "logging.handlers.RotatingFileHandler",
+            "filename": LOG_DIR / "import.log",
+            "maxBytes": 10 * 1024 * 1024,
+            "backupCount": 5,
+            "formatter": "verbose",
+            "encoding": "utf-8",
+        },
     },
+
+
+    "loggers": {
+
+        "learning.importer": {
+            "handlers": [
+                "console",
+                "import_file",
+            ],
+            "level": "INFO",
+            "propagate": False,
+        },
+
+    },
+
 
 
     #root logger helps catch logs from third-party packages
