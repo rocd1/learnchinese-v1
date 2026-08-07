@@ -1,3 +1,4 @@
+from rest_framework.permissions import AllowAny
 from rest_framework import generics
 
 from learning.models import (
@@ -12,6 +13,8 @@ from learning.serializers import (
 
 class HSKLevelListView(generics.ListAPIView):
 
+    permission_classes = [AllowAny]
+
     queryset = (
         HSKLevel.objects
         .filter(active=True)
@@ -22,6 +25,8 @@ class HSKLevelListView(generics.ListAPIView):
 
 
 class HSKLevelDetailView(generics.RetrieveAPIView):
+
+    permission_classes = [AllowAny]
 
     queryset = (
         HSKLevel.objects
