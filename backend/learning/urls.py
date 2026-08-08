@@ -11,6 +11,15 @@ from learning.views import (
     QuizResultDetailView,
 )
 
+
+from learning.views.favorite import (
+    FavoriteListView,
+    FavoriteToggleView,
+)
+
+
+
+
 urlpatterns = [
 
     # ---------------------------------------------------------
@@ -76,4 +85,21 @@ urlpatterns = [
         QuizResultDetailView.as_view(),
         name="quiz-result-detail",
     ),
+
+
+
+    #toggle view
+    path(
+        "favorites/",
+        FavoriteListView.as_view(),
+        name="favorite-list",
+    ),
+
+    path(
+        "favorites/toggle/",
+        FavoriteToggleView.as_view(),
+        name="favorite-toggle",
+    ),
+
+
 ]
