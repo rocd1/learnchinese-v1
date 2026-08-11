@@ -6,25 +6,26 @@ from learning.views import (
     VocabularyListView,
     VocabularyDetailView,
     LearnedWordListView,
-    FavoriteWordListView,
     QuizResultListView,
     QuizResultDetailView,
 )
-
 
 from learning.views.favorite import (
     FavoriteListView,
     FavoriteToggleView,
 )
 
-
+from learning.views.learning import (
+    LearningSessionAnswerView,
+    LearningSessionView,
+)
 
 
 urlpatterns = [
 
-    # ---------------------------------------------------------
+    # ========================================================
     # HSK
-    # ---------------------------------------------------------
+    # ========================================================
 
     path(
         "hsk/",
@@ -38,9 +39,9 @@ urlpatterns = [
         name="hsk-detail",
     ),
 
-    # ---------------------------------------------------------
-    # Vocabulary
-    # ---------------------------------------------------------
+    # ========================================================
+    # VOCABULARY
+    # ========================================================
 
     path(
         "vocabulary/",
@@ -54,9 +55,9 @@ urlpatterns = [
         name="vocabulary-detail",
     ),
 
-    # ---------------------------------------------------------
-    # Learning
-    # ---------------------------------------------------------
+    # ========================================================
+    # LEARNING PROGRESS
+    # ========================================================
 
     path(
         "learning/",
@@ -64,15 +65,25 @@ urlpatterns = [
         name="learning-list",
     ),
 
+    # ========================================================
+    # FAVORITES
+    # ========================================================
+
     path(
         "favorites/",
-        FavoriteWordListView.as_view(),
+        FavoriteListView.as_view(),
         name="favorite-list",
     ),
 
-    # ---------------------------------------------------------
-    # Quiz
-    # ---------------------------------------------------------
+    path(
+        "favorites/toggle/",
+        FavoriteToggleView.as_view(),
+        name="favorite-toggle",
+    ),
+
+    # ========================================================
+    # QUIZ RESULTS
+    # ========================================================
 
     path(
         "quiz-results/",
@@ -86,20 +97,19 @@ urlpatterns = [
         name="quiz-result-detail",
     ),
 
+    # ========================================================
+    # LEARNING SESSION
+    # ========================================================
 
-
-    #toggle view
     path(
-        "favorites/",
-        FavoriteListView.as_view(),
-        name="favorite-list",
+        "learning/session/",
+        LearningSessionView.as_view(),
+        name="learning-session",
     ),
 
     path(
-        "favorites/toggle/",
-        FavoriteToggleView.as_view(),
-        name="favorite-toggle",
+        "learning/session/answer/",
+        LearningSessionAnswerView.as_view(),
+        name="learning-session-answer",
     ),
-
-
 ]
