@@ -66,3 +66,32 @@ django-secure-starter/
 └── frontend/
 ```
 
+
+shell command
+```
+mkdir api-tests; cd api-tests; ni .env, auth.http, hsk.http, vocabulary.http, favorites.http, learning.http, quiz.http
+```
+
+
+```
+# REST Client private environment
+api-tests/.env
+
+
+backend/
+├── .env
+│
+├── api-tests/
+│
+│   ├── auth.http
+│   ├── hsk.http
+│   ├── vocabulary.http
+│   ├── favorites.http
+│   ├── learning.http
+│   └── quiz.http
+│
+├── accounts/
+├── learning/
+├── config/
+└── manage.py
+```
