@@ -21,6 +21,13 @@ from learning.views.learning import (
 )
 
 
+from learning.views.dashboard import (
+    DashboardStatisticsView,
+)
+
+
+
+
 urlpatterns = [
 
     # ========================================================
@@ -112,4 +119,16 @@ urlpatterns = [
         LearningSessionAnswerView.as_view(),
         name="learning-session-answer",
     ),
+
+
+    # ============================================================
+    # DASHBOARD
+    # ============================================================
+
+    path(
+        "dashboard/statistics/",
+        DashboardStatisticsView.as_view(),
+        name="dashboard-statistics",
+    ),
+
 ]
