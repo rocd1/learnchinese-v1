@@ -6,8 +6,7 @@ from learning.views import (
     VocabularyListView,
     VocabularyDetailView,
     LearnedWordListView,
-    QuizResultListView,
-    QuizResultDetailView,
+    QuizResultListView
 )
 
 from learning.views.favorite import (
@@ -20,10 +19,16 @@ from learning.views.learning import (
     LearningSessionView,
 )
 
-
 from learning.views.dashboard import (
     DashboardStatisticsView,
 )
+
+from learning.views.quiz import (
+    QuizAnswerView,
+    QuizCompleteView,
+    QuizStartView,
+)
+
 
 
 
@@ -98,11 +103,6 @@ urlpatterns = [
         name="quiz-result-list",
     ),
 
-    path(
-        "quiz-results/<int:pk>/",
-        QuizResultDetailView.as_view(),
-        name="quiz-result-detail",
-    ),
 
     # ========================================================
     # LEARNING SESSION
@@ -130,5 +130,28 @@ urlpatterns = [
         DashboardStatisticsView.as_view(),
         name="dashboard-statistics",
     ),
+
+    # ============================================================
+    # QUIZ
+    # ============================================================
+
+    path(
+        "quiz/start/",
+        QuizStartView.as_view(),
+        name="quiz-start",
+    ),
+
+    path(
+        "quiz/<int:pk>/answer/",
+        QuizAnswerView.as_view(),
+        name="quiz-answer",
+    ),
+
+    path(
+        "quiz/<int:pk>/complete/",
+        QuizCompleteView.as_view(),
+        name="quiz-complete",
+    ),
+
 
 ]

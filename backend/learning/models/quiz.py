@@ -16,6 +16,16 @@ class QuizResult(models.Model):
         DRAG_DROP = "drag_drop", "Drag & Drop"
         WORD_TILE = "word_tile", "Word Tile"
 
+    class TypingMode(models.TextChoices):
+        MEANING_TO_CHINESE = (
+            "meaning_to_chinese",
+            "Meaning to Chinese",
+        )
+        CHINESE_TO_PINYIN = (
+            "chinese_to_pinyin",
+            "Chinese to Pinyin",
+        )
+
     user = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         on_delete=models.CASCADE,
@@ -42,7 +52,14 @@ class QuizResult(models.Model):
     duration_seconds = models.PositiveIntegerField()
 
     completed_at = models.DateTimeField(
-        auto_now_add=True,
+        null=True,
+        blank=True,
+    )
+
+    typing_mode = models.CharField(
+        max_length=30,
+        choices=TypingMode.choices,
+        blank=True,
     )
 
     class Meta:
@@ -50,6 +67,7 @@ class QuizResult(models.Model):
 
     def __str__(self):
         return f"{self.user.username} - {self.quiz_type}"
+
 
 
 class QuizAnswer(models.Model):
