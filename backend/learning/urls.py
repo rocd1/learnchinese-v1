@@ -27,6 +27,8 @@ from learning.views.quiz import (
     QuizAnswerView,
     QuizCompleteView,
     QuizStartView,
+    QuizAbandonView,
+    QuizResultListView,
 )
 
 
@@ -152,6 +154,14 @@ urlpatterns = [
         QuizCompleteView.as_view(),
         name="quiz-complete",
     ),
+
+
+    path(
+        "quiz/<int:pk>/abandon/",
+        QuizAbandonView.as_view(),
+        name="quiz-abandon",
+    ),
+    
 
 
 ]

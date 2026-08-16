@@ -137,8 +137,6 @@ class QuizAnswerView(APIView):
 
 
 
-
-
 # ============================================================
 # COMPLETE QUIZ
 # ============================================================
@@ -210,3 +208,68 @@ class QuizResultListView(APIView):
             serializer.data,
             status=status.HTTP_200_OK,
         )
+
+
+
+
+# ============================================================
+# ABANDON QUIZ
+# ============================================================
+
+
+class QuizAbandonView(APIView):
+    """
+    Abandon an in-progress quiz.
+    """
+
+    permission_classes = (
+        IsAuthenticated,
+    )
+
+    def post(
+        self,
+        request,
+        pk,
+    ):
+        try:
+            quiz = QuizResult.objects.get(
+                pk=pk,
+            )
+
+            quiz = QuizService.abandon_quiz(
+                user=request.user,
+                quiz=quiz,
+            )
+
+        except QuizResult.DoesNotExist:
+            return Response(
+                {
+                    "detail": "Quiz not found."
+                },
+                status=status.HTTP_404_NOT_FOUND,
+            )
+
+        except PermissionError as exc:
+            return Response(
+                {
+                    "detail": str(exc),
+                },
+                status=status.HTTP_403_FORBIDDEN,
+            )
+
+        except ValueError as exc:
+            return Response(
+                {
+                    "detail": str(exc),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        serializer = QuizResultSerializer(
+            quiz,
+        )
+
+        return Response(
+            serializer.data,
+            status=status.HTTP_200_OK,
+        )    
