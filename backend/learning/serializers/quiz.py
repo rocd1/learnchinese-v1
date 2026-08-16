@@ -96,6 +96,7 @@ class QuizResultSerializer(serializers.ModelSerializer):
             "quiz_type_display",
             "typing_mode",
             "typing_mode_display",
+            "status",
             "hsk_level",
             "hsk_level_name",
             "total_questions",
@@ -107,6 +108,108 @@ class QuizResultSerializer(serializers.ModelSerializer):
         )
 
         read_only_fields = fields
+
+
+
+# ============================================================
+# QUIZ QUESTION
+# ============================================================
+
+
+class QuizQuestionSerializer(serializers.ModelSerializer):
+    """
+    Serializer for vocabulary presented as a quiz question.
+
+    The fields exposed depend on the quiz type and typing mode.
+    Correct answers are never exposed for typing quizzes.
+    """
+
+    class Meta:
+        model = Vocabulary
+        fields = (
+            "id",
+            "simplified",
+            "pinyin",
+            "meaning",
+        )
+
+    def to_representation(self, instance):
+        """
+        Return only the fields required by the current quiz type.
+        """
+
+        quiz_type = self.context.get("quiz_type")
+        typing_mode = self.context.get("typing_mode", "")
+
+        if quiz_type == QuizResult.QuizType.FLASHCARD:
+            return {
+                "id": instance.id,
+                "simplified": instance.simplified,
+                "pinyin": instance.pinyin,
+                "meaning": instance.meaning,
+            }
+
+        if quiz_type == QuizResult.QuizType.MATCHING:
+            return {
+                "id": instance.id,
+                "simplified": instance.simplified,
+                "meaning": instance.meaning,
+            }
+
+        if quiz_type == QuizResult.QuizType.TYPING:
+
+            if (
+                typing_mode
+                == QuizResult.TypingMode.MEANING_TO_CHINESE
+            ):
+                return {
+                    "id": instance.id,
+                    "meaning": instance.meaning,
+                }
+
+            if (
+                typing_mode
+                == QuizResult.TypingMode.CHINESE_TO_PINYIN
+            ):
+                return {
+                    "id": instance.id,
+                    "simplified": instance.simplified,
+                }
+
+        if quiz_type == QuizResult.QuizType.WORD_TILE:
+            return {
+                "id": instance.id,
+                "simplified": instance.simplified,
+            }
+
+        raise serializers.ValidationError(
+            "Unsupported quiz type."
+        )
+
+
+
+class QuizStartResponseSerializer(serializers.Serializer):
+    """
+    Response returned when a quiz is started.
+    """
+
+    quiz_id = serializers.IntegerField()
+
+    quiz_type = serializers.CharField()
+
+    typing_mode = serializers.CharField()
+
+    hsk_level = serializers.IntegerField()
+
+    total_questions = serializers.IntegerField()
+
+    questions = QuizQuestionSerializer(
+        many=True,
+    )
+
+
+
+
 
 
 # ============================================================

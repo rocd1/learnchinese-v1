@@ -10,7 +10,9 @@ from learning.serializers.quiz import (
     QuizResultSerializer,
     QuizStartSerializer,
     QuizAnswerSerializer,
+    QuizQuestionSerializer,
 )
+
 from learning.services.quiz_service import QuizService
 
 from django.shortcuts import get_object_or_404
@@ -26,6 +28,7 @@ from rest_framework.exceptions import (
 )
 
 from learning.models import QuizResult
+
 
 
 
@@ -52,27 +55,45 @@ class QuizStartView(APIView):
             raise_exception=True,
         )
 
-        quiz = QuizService.start_quiz(
-            user=request.user,
-            quiz_type=serializer.validated_data["quiz_type"],
-            hsk_level=serializer.validated_data["hsk_level"],
-            total_questions=serializer.validated_data[
-                "total_questions"
-            ],
-            typing_mode=serializer.validated_data.get(
-                "typing_mode",
-                "",
-            ),
+        quiz_type = serializer.validated_data["quiz_type"]
+
+        typing_mode = serializer.validated_data.get(
+            "typing_mode",
+            "",
         )
 
-        response_serializer = QuizResultSerializer(
-            quiz,
+        quiz, vocabulary = QuizService.start_quiz(
+            user=request.user,
+            quiz_type=quiz_type,
+            hsk_level=serializer.validated_data["hsk_level"],
+            total_questions=serializer.validated_data["total_questions"],
+            typing_mode=typing_mode,
         )
+
+        response_data = {
+            "quiz_id": quiz.id,
+            "quiz_type": quiz.quiz_type,
+            "typing_mode": quiz.typing_mode,
+            "hsk_level": quiz.hsk_level_id,
+            "total_questions": quiz.total_questions,
+            "questions": QuizQuestionSerializer(
+                vocabulary,
+                many=True,
+                context={
+                    "quiz_type": quiz.quiz_type,
+                    "typing_mode": quiz.typing_mode,
+                },
+            ).data,
+        }
 
         return Response(
-            response_serializer.data,
+            response_data,
             status=status.HTTP_201_CREATED,
         )
+
+
+
+
 
 
 # ============================================================

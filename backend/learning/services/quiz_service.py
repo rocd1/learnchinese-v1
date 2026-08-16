@@ -351,10 +351,11 @@ class QuizService:
                 "You do not have access to this quiz."
             )
 
-        if quiz.completed_at is not None:
+        if quiz.status != QuizResult.QuizStatus.IN_PROGRESS:
             raise ValueError(
-                "This quiz has already been completed."
+                "Only an in-progress quiz can accept answers."
             )
+        
 
         # ----------------------------------------------------
         # Determine expected answer
@@ -410,6 +411,7 @@ class QuizService:
 
         return answer
 
+    
     # ========================================================
     # COMPLETE QUIZ
     # ========================================================
@@ -434,9 +436,9 @@ class QuizService:
                 "You do not have access to this quiz."
             )
 
-        if quiz.completed_at is not None:
+        if quiz.status != QuizResult.QuizStatus.IN_PROGRESS:
             raise ValueError(
-                "This quiz has already been completed."
+                "Only an in-progress quiz can be completed."
             )
 
         if duration_seconds < 0:
@@ -471,6 +473,28 @@ class QuizService:
         # Update quiz
         # ----------------------------------------------------
 
+        quiz.status = QuizResult.QuizStatus.COMPLETED
+        quiz.correct_answers = correct_answers
+        quiz.raw_score = raw_score
+        quiz.duration_seconds = duration_seconds
+        quiz.completed_at = timezone.now()
+
+        quiz.save(
+            update_fields=[
+                "status",
+                "correct_answers",
+                "raw_score",
+                "duration_seconds",
+                "completed_at",
+            ],
+        )
+
+        # ----------------------------------------------------
+        # Complete quiz
+        # ----------------------------------------------------
+
+        quiz.status = QuizResult.QuizStatus.COMPLETED
+
         quiz.correct_answers = correct_answers
 
         quiz.raw_score = raw_score
@@ -481,6 +505,7 @@ class QuizService:
 
         quiz.save(
             update_fields=[
+                "status",
                 "correct_answers",
                 "raw_score",
                 "duration_seconds",
@@ -496,6 +521,44 @@ class QuizService:
             answered_questions,
             correct_answers,
             raw_score,
+        )
+
+        return quiz
+
+
+
+    @staticmethod
+    @transaction.atomic
+    def abandon_quiz(
+        user,
+        quiz: QuizResult,
+    ) -> QuizResult:
+        """
+        Abandon an in-progress quiz.
+        """
+
+        if quiz.user_id != user.pk:
+            raise PermissionError(
+                "You do not have access to this quiz."
+            )
+
+        if quiz.status != QuizResult.QuizStatus.IN_PROGRESS:
+            raise ValueError(
+                "Only an in-progress quiz can be abandoned."
+            )
+
+        quiz.status = QuizResult.QuizStatus.ABANDONED
+
+        quiz.save(
+            update_fields=[
+                "status",
+            ],
+        )
+
+        logger.info(
+            "Quiz abandoned: user=%s quiz=%s",
+            user.pk,
+            quiz.pk,
         )
 
         return quiz

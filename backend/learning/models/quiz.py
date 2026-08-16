@@ -7,6 +7,11 @@ from .vocabulary import Vocabulary
 
 class QuizResult(models.Model):
 
+    class QuizStatus(models.TextChoices):
+        IN_PROGRESS = "in_progress", "In Progress"
+        COMPLETED = "completed", "Completed"
+        ABANDONED = "abandoned", "Abandoned"
+
     class QuizType(models.TextChoices):
         FLASHCARD = "flashcard", "Flashcard"
         MULTIPLE_CHOICE = "multiple_choice", "Multiple Choice"
@@ -32,6 +37,12 @@ class QuizResult(models.Model):
         related_name="quiz_results",
     )
 
+    status = models.CharField(
+        max_length=20,
+        choices=QuizStatus.choices,
+        default=QuizStatus.IN_PROGRESS,
+    )
+
     quiz_type = models.CharField(
         max_length=30,
         choices=QuizType.choices,
@@ -45,11 +56,17 @@ class QuizResult(models.Model):
 
     total_questions = models.PositiveIntegerField()
 
-    correct_answers = models.PositiveIntegerField()
+    correct_answers = models.PositiveIntegerField(
+        default=0,
+    )
 
-    raw_score = models.PositiveIntegerField()
+    raw_score = models.PositiveIntegerField(
+        default=0,
+    )
 
-    duration_seconds = models.PositiveIntegerField()
+    duration_seconds = models.PositiveIntegerField(
+        default=0,
+    )
 
     completed_at = models.DateTimeField(
         null=True,
@@ -63,11 +80,10 @@ class QuizResult(models.Model):
     )
 
     class Meta:
-        ordering = ["-completed_at"]
+        ordering = ["-id"]
 
     def __str__(self):
         return f"{self.user.username} - {self.quiz_type}"
-
 
 
 class QuizAnswer(models.Model):
@@ -84,9 +100,13 @@ class QuizAnswer(models.Model):
         related_name="quiz_answers",
     )
 
-    user_answer = models.CharField(max_length=255)
+    user_answer = models.CharField(
+        max_length=255,
+    )
 
-    correct_answer = models.CharField(max_length=255)
+    correct_answer = models.CharField(
+        max_length=255,
+    )
 
     is_correct = models.BooleanField()
 
@@ -98,4 +118,7 @@ class QuizAnswer(models.Model):
         ordering = ["answered_at"]
 
     def __str__(self):
-        return f"{self.quiz.user.username} - {self.vocabulary.simplified}"
+        return (
+            f"{self.quiz.user.username} "
+            f"- {self.vocabulary.simplified}"
+        )
