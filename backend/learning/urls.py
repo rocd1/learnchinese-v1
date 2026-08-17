@@ -32,6 +32,14 @@ from learning.views.quiz import (
 )
 
 
+from learning.views.guest_quiz import (
+    GuestQuizAnswerView,
+    GuestQuizCompleteView,
+    GuestQuizAbandonView,
+    GuestQuizStartView,
+)
+
+
 
 
 
@@ -161,6 +169,39 @@ urlpatterns = [
         QuizAbandonView.as_view(),
         name="quiz-abandon",
     ),
+
+
+
+
+
+    # --------------------------------------------------------
+    # Guest Practice Quiz
+    # --------------------------------------------------------
+
+    path(
+        "guest-quiz/start/",
+        GuestQuizStartView.as_view(),
+        name="guest-quiz-start",
+    ),
+
+    path(
+        "guest-quiz/answer/",
+        GuestQuizAnswerView.as_view(),
+        name="guest-quiz-answer",
+    ),
+
+    path(
+        "guest-quiz/complete/",
+        GuestQuizCompleteView.as_view(),
+        name="guest-quiz-complete",
+    ),
+
+    path(
+        "guest-quiz/abandon/",
+        GuestQuizAbandonView.as_view(),
+        name="guest-quiz-abandon",
+    ),
+
     
 
 

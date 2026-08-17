@@ -497,6 +497,9 @@ DEFAULT_FROM_EMAIL = env(
 )
 
 
+SESSION_ENGINE = "django.contrib.sessions.backends.signed_cookies"
+
+
 
 
 
