@@ -1,4 +1,5 @@
 from rest_framework import serializers
+from .vocabulary import VocabularyListSerializer
 
 from learning.models import (
     HSKLevel,
@@ -7,14 +8,11 @@ from learning.models import (
     Vocabulary,
 )
 
-from .vocabulary import VocabularyListSerializer
-
 
 
 # ============================================================
 # QUIZ ANSWER
 # ============================================================
-
 
 class QuizAnswerSerializer(serializers.ModelSerializer):
     """
@@ -52,11 +50,9 @@ class QuizAnswerSerializer(serializers.ModelSerializer):
             "answered_at",
         )
 
-
 # ============================================================
 # QUIZ RESULT
 # ============================================================
-
 
 class QuizResultSerializer(serializers.ModelSerializer):
     """
@@ -110,11 +106,9 @@ class QuizResultSerializer(serializers.ModelSerializer):
         read_only_fields = fields
 
 
-
 # ============================================================
 # QUIZ QUESTION
 # ============================================================
-
 
 class QuizQuestionSerializer(serializers.ModelSerializer):
     """
@@ -187,7 +181,6 @@ class QuizQuestionSerializer(serializers.ModelSerializer):
         )
 
 
-
 class QuizStartResponseSerializer(serializers.Serializer):
     """
     Response returned when a quiz is started.
@@ -207,15 +200,9 @@ class QuizStartResponseSerializer(serializers.Serializer):
         many=True,
     )
 
-
-
-
-
-
 # ============================================================
 # START QUIZ
 # ============================================================
-
 
 class QuizStartSerializer(serializers.Serializer):
     """
@@ -285,7 +272,6 @@ class QuizStartSerializer(serializers.Serializer):
 # SUBMIT ANSWER
 # ============================================================
 
-
 class QuizAnswerSubmitSerializer(serializers.Serializer):
     """
     Validate a user's answer to a quiz question.
@@ -305,7 +291,6 @@ class QuizAnswerSubmitSerializer(serializers.Serializer):
 # ============================================================
 # COMPLETE QUIZ
 # ============================================================
-
 
 class QuizCompleteSerializer(serializers.Serializer):
     """

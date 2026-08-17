@@ -2,8 +2,8 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from learning.services.quiz_service import QuizService
 
-from learning.models import QuizResult
 from learning.serializers.quiz import (
     QuizAnswerSubmitSerializer,
     QuizCompleteSerializer,
@@ -12,10 +12,6 @@ from learning.serializers.quiz import (
     QuizAnswerSerializer,
     QuizQuestionSerializer,
 )
-
-from learning.services.quiz_service import QuizService
-
-from django.shortcuts import get_object_or_404
 
 from learning.models import (
     QuizResult,
@@ -27,15 +23,11 @@ from rest_framework.exceptions import (
     ValidationError,
 )
 
-from learning.models import QuizResult
-
-
 
 
 # ============================================================
 # START QUIZ
 # ============================================================
-
 
 class QuizStartView(APIView):
     """
@@ -92,10 +84,6 @@ class QuizStartView(APIView):
         )
 
 
-
-
-
-
 # ============================================================
 # SUBMIT ANSWER
 # ============================================================
@@ -135,12 +123,9 @@ class QuizAnswerView(APIView):
         )
 
 
-
-
 # ============================================================
 # COMPLETE QUIZ
 # ============================================================
-
 
 class QuizCompleteView(APIView):
     permission_classes = [IsAuthenticated]
@@ -210,12 +195,9 @@ class QuizResultListView(APIView):
         )
 
 
-
-
 # ============================================================
 # ABANDON QUIZ
 # ============================================================
-
 
 class QuizAbandonView(APIView):
     """
