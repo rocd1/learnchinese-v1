@@ -1,45 +1,48 @@
 from django.urls import path
 
+
 from learning.views import (
     HSKLevelListView,
     HSKLevelDetailView,
     VocabularyListView,
     VocabularyDetailView,
     LearnedWordListView,
-    QuizResultListView
+    QuizResultListView,
 )
+
 
 from learning.views.favorite import (
     FavoriteListView,
     FavoriteToggleView,
 )
 
+
 from learning.views.learning import (
     LearningSessionAnswerView,
     LearningSessionView,
 )
 
+
 from learning.views.dashboard import (
     DashboardStatisticsView,
 )
+
 
 from learning.views.quiz import (
     QuizAnswerView,
     QuizCompleteView,
     QuizStartView,
     QuizAbandonView,
-    QuizResultListView,
 )
 
 
 from learning.views.guest_quiz import (
+    GuestQuizStartView,
+    GuestQuizCurrentView,
     GuestQuizAnswerView,
     GuestQuizCompleteView,
     GuestQuizAbandonView,
-    GuestQuizStartView,
 )
-
-
 
 
 
@@ -171,17 +174,20 @@ urlpatterns = [
     ),
 
 
-
-
-
-    # --------------------------------------------------------
-    # Guest Practice Quiz
-    # --------------------------------------------------------
+    # ========================================================
+    # GUEST PRACTICE QUIZ
+    # ========================================================
 
     path(
         "guest-quiz/start/",
         GuestQuizStartView.as_view(),
         name="guest-quiz-start",
+    ),
+
+    path(
+        "guest-quiz/current/",
+        GuestQuizCurrentView.as_view(),
+        name="guest-quiz-current",
     ),
 
     path(
@@ -201,8 +207,5 @@ urlpatterns = [
         GuestQuizAbandonView.as_view(),
         name="guest-quiz-abandon",
     ),
-
-    
-
 
 ]

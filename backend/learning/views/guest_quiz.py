@@ -8,7 +8,9 @@ from learning.serializers.guest_quiz import (
     GuestQuizStartSerializer,
 )
 
-from learning.services.guest_quiz_service import GuestQuizService
+from learning.services.guest_quiz_service import (
+    GuestQuizService,
+)
 
 
 # ============================================================
@@ -38,8 +40,12 @@ class GuestQuizStartView(APIView):
         try:
             quiz_data = GuestQuizService.start_quiz(
                 request=request,
-                quiz_type=serializer.validated_data["quiz_type"],
-                hsk_level=serializer.validated_data["hsk_level"],
+                quiz_type=serializer.validated_data[
+                    "quiz_type"
+                ],
+                hsk_level=serializer.validated_data[
+                    "hsk_level"
+                ],
                 total_questions=serializer.validated_data[
                     "total_questions"
                 ],
@@ -60,6 +66,40 @@ class GuestQuizStartView(APIView):
         return Response(
             quiz_data,
             status=status.HTTP_201_CREATED,
+        )
+
+
+# ============================================================
+# GET CURRENT GUEST QUIZ
+# ============================================================
+
+
+class GuestQuizCurrentView(APIView):
+    """
+    Return the currently active guest quiz.
+
+    The quiz state is read from Django's signed session.
+    """
+
+    permission_classes = [AllowAny]
+
+    def get(self, request):
+        try:
+            quiz = GuestQuizService.get_current_quiz(
+                request=request,
+            )
+
+        except ValueError as exc:
+            return Response(
+                {
+                    "detail": str(exc),
+                },
+                status=status.HTTP_400_BAD_REQUEST,
+            )
+
+        return Response(
+            quiz,
+            status=status.HTTP_200_OK,
         )
 
 
