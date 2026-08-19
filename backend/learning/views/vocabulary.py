@@ -33,7 +33,7 @@ class VocabularyListView(generics.ListAPIView):
         "simplified",
         "traditional",
         "pinyin",
-        "meaning_text",
+        "meaning",
     ]
 
     ordering_fields = [
