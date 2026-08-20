@@ -29,7 +29,7 @@ yarn-error.log
 !.vscode/mcp.json
 .history/*
 
-# Miscellaneous
+# Miscellaneous/ angular/ build tools
 /.angular/cache
 .sass-cache/
 /connect.lock
@@ -39,6 +39,20 @@ testem.log
 /typings
 __screenshots__/
 
-# System files
+
+
+# Environment files
+.env
+.env.*
+!.env.example
+
+# Local development files
+*.local
+
+# Logs
+*.log
+logs/
+
+# OS / local configuration /system files
 .DS_Store
 Thumbs.db
