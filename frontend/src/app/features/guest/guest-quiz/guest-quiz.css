@@ -1,0 +1,67 @@
+.guest-quiz-page {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+
+.guest-quiz-card {
+  width: 100%;
+  max-width: 500px;
+  padding: 2rem;
+  box-sizing: border-box;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  border-radius: 12px;
+}
+
+.guest-quiz-card h1 {
+  margin: 0 0 0.5rem;
+  font-size: 2rem;
+}
+
+.subtitle {
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.guest-info {
+  margin-bottom: 2rem;
+  line-height: 1.6;
+}
+
+.start-button {
+  width: 100%;
+  padding: 0.9rem 1rem;
+  border: none;
+  border-radius: 6px;
+  font: inherit;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.start-button:hover {
+  opacity: 0.9;
+}
+
+.account-link {
+  margin: 1.5rem 0 0;
+}
+
+.login-link {
+  margin: 0.75rem 0 0;
+}
+
+.account-link a,
+.login-link a,
+.home-link {
+  font-weight: 600;
+}
+
+.home-link {
+  display: block;
+  margin-top: 1rem;
+  text-decoration: none;
+}
